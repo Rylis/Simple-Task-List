@@ -1,24 +1,13 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "function.h"
 #include "task.h"
 using namespace std;
 
-void printTasks(vector<Task> vec) {
-	cout << "*******************************\n";
-	cout << "No.\t" << "DATE\t\t" << "Status\t\t" << "NAME" << "\n";
-
-	for (int i = 0; i < vec.size();i++) {
-		cout << i << "\t" << vec.at(i).getDate() << "\t";
-		if (vec.at(i).getStatus()) {
-			cout << "Completed";
-		}
-		else {
-			cout << "Pending";
-		}
-		cout << "\t" << vec.at(i).getName() << "\n";
-	}
+void printTasks(vector<Task>& vec) {
+	displayTasks(vec);
 
 	cout << "\nPress Enter to Continue...\n";
 	cin.ignore();
@@ -46,6 +35,7 @@ bool createTask(vector<Task>& vec) {
 }
 
 void updateStatus(vector<Task>& vec) {
+	cout << "\n";
 	//if there are no tasks
 	if (vec.empty()) {
 		cout << "There are no tasks.";
@@ -53,7 +43,7 @@ void updateStatus(vector<Task>& vec) {
 	}
 
 	int i;
-	cout << "Input task no. to change status: \n";
+	cout << "Input task no. to change status: ";
 	cin >> i;
 	cin.ignore();
 
@@ -69,13 +59,14 @@ void updateStatus(vector<Task>& vec) {
 	else {
 		cout << "Task set to \'Completed\'\n";
 	}
+	cout << "\nPress Enter to Continue...\n";
 	vec.at(i).setStatus();
 }
 
 void deleteTask(vector<Task>& vec) {
 	//if there are no tasks
 	if (vec.empty()) {
-		cout << "There are no tasks.";
+		cout << "There are no tasks.\n\n";
 		return;
 	}
 
@@ -94,9 +85,41 @@ void deleteTask(vector<Task>& vec) {
 	cout << "Task deleted.\n";
 }
 
+void sortTasks(vector<Task>& vec) {
+	//if there are no tasks
+	if (vec.empty()) {
+		cout << "There are no tasks.\n\n";
+		return;
+	}
+	if (vec.size() != 1) {
+		sort(vec.begin(), vec.end(), compareDate);
+	}
+	displayTasks(vec);
+}
+
+void displayTasks(vector<Task>& vec) {
+	cout << "*******************************\n";
+	cout << "No.\t" << "DATE\t\t" << "Status\t\t" << "NAME" << "\n";
+
+	for (int i = 0; i < vec.size();i++) {
+		cout << i << "\t" << vec.at(i).getDate() << "\t";
+		if (vec.at(i).getStatus()) {
+			cout << "Completed";
+		}
+		else {
+			cout << "Pending\t";
+		}
+		cout << "\t" << vec.at(i).getName() << "\n";
+	}
+}
+
 bool verifyDate(string s) {
 	if (s.length() != 8) return false;
 	string::const_iterator it = s.begin();
 	while (it != s.end() && isdigit(*it)) it++;
 	return !s.empty() && it == s.end();
+}
+
+bool compareDate(Task t1, Task t2) {
+	return (t1.getDate() < t2.getDate());
 }
