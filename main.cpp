@@ -17,9 +17,10 @@ int main()
 		cout << "*******************************\n";
 		cout << " 0 - View Tasks\n";
 		cout << " 1 - Add a Task\n";
-		cout << " 2 - Update task status\n";
+		cout << " 2 - Update Task status\n";
 		cout << " 3 - Delete a Task\n";
-		cout << " 4 - Exit\n\n";
+		cout << " 4 - Sort Tasks\n";
+		cout << " 5 - Exit\n\n";
 		cout << " Enter your choice and press enter: ";
 
 		cin >> choice;
@@ -44,6 +45,9 @@ int main()
 				deleteTask(vec);
 				break;
 			case 4:
+				sortTasks(vec);
+				break;
+			case 5:
 				cout << "End of Program.\n";
 				menu = false;
 				break;
